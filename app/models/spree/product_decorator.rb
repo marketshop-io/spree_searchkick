@@ -26,14 +26,14 @@ module Spree::ProductDecorator
     }
 
     def base.autocomplete_fields
-      [:name]
+      ['taxon_names^7', 'name^5', 'description', 'sku', 'partnumber^2', 'manufacturer^3']
     end
 
     def base.search_fields
-      [:name]
+      ['taxon_names^7', 'name^5', 'description', 'sku', 'partnumber^2', 'manufacturer^3']
     end
 
-    def base.autocomplete(keywords)
+    def base.autocomplete(keywords, store_id)
       if keywords
         Spree::Product.search(
           keywords,
@@ -42,23 +42,26 @@ module Spree::ProductDecorator
           limit: 10,
           load: false,
           misspellings: { below: 3 },
-          where: search_where,
-        ).map(&:name).map(&:strip).uniq
+          where: search_where(store_id),
+        ).map { |p| "#{p.name.strip}:::#{p.slug}"}.uniq
       else
         Spree::Product.search(
           "*",
           fields: autocomplete_fields,
           load: false,
           misspellings: { below: 3 },
-          where: search_where,
-        ).map(&:name).map(&:strip)
+          where: search_where(store_id),
+        ).map { |p| "#{p.name.strip}:::#{p.slug}"}
       end
     end
 
-    def base.search_where
+    def base.search_where(store_id)
       {
         active: true,
+        in_stock: true,
         price: { not: nil },
+        store_ids: store_id,
+        vendor_id: Spree::Vendor.active.pluck(:id)
       }
     end
 
