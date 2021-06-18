@@ -12,9 +12,10 @@ module Spree::ProductsControllerDecorator
   # TODO: move this into an API route
   def autocomplete
     keywords = params[:keywords] ||= nil
-    json = Spree::Product.autocomplete(keywords)
+    json = Spree::Product.autocomplete(keywords, params[:current_store_id])
     render json: json
   end
+
 end
 
 if defined?(Spree::ProductsController)
