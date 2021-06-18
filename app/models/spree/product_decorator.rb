@@ -149,7 +149,11 @@ module Spree::ProductDecorator
   end
 
   def index_data
-    {}
+    {
+      vendor_id: vendor_id,
+      manufacturer: manufacturer,
+      store_ids: store_ids
+    }
   end
 end
 
