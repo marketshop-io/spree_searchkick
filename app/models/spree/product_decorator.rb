@@ -26,11 +26,11 @@ module Spree::ProductDecorator
     }
 
     def base.autocomplete_fields
-      ['taxon_names^7', 'name^5', 'description', 'sku', 'partnumber^2', 'manufacturer^3']
+      ['taxon_names^7', 'name^5', 'description', 'skus', 'partnumber^2', 'manufacturer^3']
     end
 
     def base.search_fields
-      ['taxon_names^7', 'name^5', 'description', 'sku', 'partnumber^2', 'manufacturer^3']
+      ['taxon_names^7', 'name^5', 'description', 'skus', 'partnumber^2', 'manufacturer^3']
     end
 
     def base.autocomplete(keywords, store_id)
@@ -73,7 +73,7 @@ module Spree::ProductDecorator
   end
 
   def search_data
-    all_variants = variants_including_master.pluck(:id, :sku)
+    all_variants = variants_including_master.map { |v| [v.id, v.sku_without_prefix] }
 
     all_taxons = taxons.flat_map { |t| t.self_and_ancestors.pluck(:id, :name) }.uniq
 
@@ -152,6 +152,7 @@ module Spree::ProductDecorator
     {
       vendor_id: vendor_id,
       manufacturer: manufacturer,
+      partnumber: partnumber,
       store_ids: store_ids
     }
   end
