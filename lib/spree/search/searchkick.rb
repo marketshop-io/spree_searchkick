@@ -36,6 +36,7 @@ module Spree
       def sorted
         order_params = {}
         order_params[:conversions] = :desc if conversions
+        order_params[:total_on_hand] = :desc
         order_params
       end
 
