@@ -35,6 +35,8 @@ module Spree
 
       def sorted
         order_params = {}
+        return order_params unless keyword_query == "*"
+
         order_params[:conversions] = :desc if conversions
         order_params[:total_on_hand] = :desc
         order_params
