@@ -26,11 +26,11 @@ module Spree::ProductDecorator
     }
 
     def base.autocomplete_fields
-      ['taxon_names^7', 'name^5', 'description', 'skus', 'partnumber^2', 'manufacturer^3']
+      ['name^5', 'description', 'skus', 'taxon_names^7', 'partnumber^2', 'manufacturer^3']
     end
 
     def base.search_fields
-      ['taxon_names^7', 'name^5', 'description', 'skus', 'partnumber^2', 'manufacturer^3']
+      ['name^5', 'description', 'skus', 'taxon_names^7', 'partnumber^2', 'manufacturer^3']
     end
 
     def base.autocomplete(keywords, store_id)
@@ -106,7 +106,7 @@ module Spree::ProductDecorator
     filterable_option_types = option_types.filterable.pluck(:id, :name)
     option_value_ids = ::Spree::OptionValueVariant.where(variant_id: all_variants.map(&:first)).pluck(:option_value_id).uniq
     option_values = ::Spree::OptionValue.where(
-      id: option_value_ids, 
+      id: option_value_ids,
       option_type_id: filterable_option_types.map(&:first)
     ).pluck(:option_type_id, :name)
 

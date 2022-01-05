@@ -13,6 +13,7 @@ module Spree
           where: where_query,
           aggs: aggregations,
           smart_aggs: true,
+          boost_where: { in_stock: true },
           order: sorted,
           page: curr_page,
           per_page: per_page,
@@ -36,7 +37,6 @@ module Spree
       def sorted
         order_params = {}
         order_params[:conversions] = :desc if conversions
-        order_params[:total_on_hand] = :desc
         order_params
       end
 
@@ -54,8 +54,8 @@ module Spree
 
       def aggregation_classes
         [
-          Spree::Taxonomy, 
-          Spree::Property, 
+          Spree::Taxonomy,
+          Spree::Property,
           Spree::OptionType
         ]
       end
