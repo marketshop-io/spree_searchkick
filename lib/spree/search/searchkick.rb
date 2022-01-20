@@ -26,6 +26,7 @@ module Spree
           price: { not: nil },
         }
         where_query[:taxon_ids] = taxon.id if taxon
+        where_query[:counties] = [county_id] if county_id
         add_search_filters(where_query)
       end
 
