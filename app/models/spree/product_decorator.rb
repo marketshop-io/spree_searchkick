@@ -92,7 +92,9 @@ module Spree::ProductDecorator
       taxon_ids: all_taxons.map(&:first),
       taxon_names: all_taxons.map(&:last),
       skus: all_variants.map(&:last),
-      total_on_hand: total_on_hand
+      total_on_hand: total_on_hand,
+      counties: counties
+
     }
 
     json.merge!(option_types_for_es_index(all_variants))
@@ -153,7 +155,8 @@ module Spree::ProductDecorator
       vendor_id: vendor_id,
       manufacturer: manufacturer,
       partnumber: partnumber,
-      store_ids: store_ids
+      store_ids: store_ids,
+      counties: counties
     }
   end
 end
